@@ -13,18 +13,15 @@ export const FETCH_EVENTS = 'FETCH_EVENTS';
 // }
 
 export function fetchEvents(term) {
-  const body = {
-    query: {
-      match: {
-        deviceID: term
-      }
+    let body = {};
+    if (term && term.length) {
+        body.q = `deviceID:${term}`;
     }
-  }
-  const url = `${ROOT_URL}`;
-  const request = axios.get(url);
+    const url = `${ROOT_URL}`;
+    const request = axios.get(url, {params: body});
 
-  return {
-    type: FETCH_EVENTS,
-    payload: request
-  };
+    return {
+        type: FETCH_EVENTS,
+        payload: request
+    };
 }
