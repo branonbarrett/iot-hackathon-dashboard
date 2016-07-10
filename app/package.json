@@ -1,9 +1,9 @@
 {
-  "name": "redux-simple-starter",
+  "name": "iot-hackathon",
   "version": "1.0.0",
-  "description": "Simple starter package for Redux with React and Babel support",
+  "description": "iot-hackathon",
   "main": "index.js",
-  "repository": "git@github.com:StephenGrider/ReduxSimpleStarter.git",
+  "repository": "https://github.com/branonbarrett/iot-hackathon-dashboard.git",
   "scripts": {
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --port 7999",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
@@ -37,6 +37,7 @@
     "react-redux": "^4.0.0",
     "react-router": "^2.0.1",
     "react-sparklines": "^1.5.2",
+    "react-toastr-redux": "0.3.0",
     "redux": "^3.0.4",
     "redux-promise": "^0.5.3"
   }
