@@ -25,7 +25,7 @@ class EventList extends Component {
 
   renderEvent(event) {
 
-    console.log(event);
+    //console.log(event);
     let data = event._source;
 
     const date = data['@timestamp'];
