@@ -12,7 +12,7 @@ class EventList extends Component {
 
     props.fetchEvents('');
 
-    this.runner();
+    //this.runner();
   }
 
   runner() {
