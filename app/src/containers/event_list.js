@@ -25,17 +25,18 @@ class EventList extends Component {
 
   renderEvent(event) {
 
-    // console.log(event);
+    console.log(event);
+    let data = event._source;
 
-    const date = event.date;
-    const position = [ event.lat, event.lon ];
+    const date = data['@timestamp'];
+    const position = [ data.lat, data.lng ];
 
     return (
-      <tr key={event.id}>
-        <td><Map position={position} id={event.id}/></td>
-        <td>{event.id}</td>
-        <td>{event.date}</td>
-        <td>{event.name}</td>
+      <tr key={data.seqNumber}>
+        <td><Map position={position} id={data.deviceID}/></td>
+        <td>{data.deviceID}</td>
+        <td>{date}</td>
+        <td>{data.station}</td>
       </tr>
     );
   }
@@ -47,9 +48,9 @@ class EventList extends Component {
         <thead>
           <tr>
             <th>Location</th>
-            <th>Event ID</th>
+            <th>Device ID</th>
             <th>Date</th>
-            <th>Name</th>
+            <th>Data Station</th>
           </tr>
         </thead>
         <tbody>
