@@ -13,7 +13,7 @@ export const FETCH_EVENTS = 'FETCH_EVENTS';
 // }
 
 export function fetchEvents(term) {
-    let body = {};
+    let body = {sort:`@timestamp:desc`};
     if (term && term.length) {
         body.q = `deviceID:${term}`;
     }

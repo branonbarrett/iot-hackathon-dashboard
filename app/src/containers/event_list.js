@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { fetchEvents } from '../actions/index';
 import { toastr } from 'react-redux-toastr'
+import moment from 'moment';
 
 import Map from '../components/map';
 
@@ -40,8 +41,9 @@ class EventList extends Component {
 
     //console.log(event);
     let data = event._source;
+console.log(moment);
+    const date = moment(data['@timestamp']).format('llll');
 
-    const date = data['@timestamp'];
     const position = [ data.lat, data.lng ];
 
     return (
