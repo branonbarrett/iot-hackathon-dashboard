@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { fetchEvents } from '../actions/index';
+import { toastr } from 'react-redux-toastr'
 
 import Map from '../components/map';
 
@@ -12,7 +13,7 @@ class EventList extends Component {
 
     props.fetchEvents('');
 
-    //this.runner();
+    this.runner();
   }
 
   runner() {
@@ -22,6 +23,18 @@ class EventList extends Component {
     }, 2000);
   }
 
+  componentWillReceiveProps(nextprops) {
+    if (!nextprops.events || !this.props.events) return;
+
+    //toastr.success('The title', 'The message');
+    // const data = nextprops.events[0]._source
+    console.log(nextprops.events.count);
+    console.log(this.props.events.count);
+    if (this.props.events.count !== nextprops.events.count) {
+      toastr.error('rrrrrrrrr');
+      //this.props.dispatch(NotificationActions.resetNotification());
+    }
+  }
 
   renderEvent(event) {
 
@@ -42,6 +55,7 @@ class EventList extends Component {
   }
 
   render() {
+    if (!this.props.events.data) return <div></div>;
 
     return (
       <table className="table table-hover">
@@ -54,7 +68,7 @@ class EventList extends Component {
           </tr>
         </thead>
         <tbody>
-          {this.props.events.map(this.renderEvent)}
+          {this.props.events.data.map(this.renderEvent)}
         </tbody>
       </table>
     );

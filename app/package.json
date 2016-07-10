@@ -34,11 +34,13 @@
     "react-dom": "^0.14.3",
     "react-google-maps": "^4.7.1",
     "react-leaflet": "^0.11.2",
+    "react-notify-toast": "0.1.1",
     "react-redux": "^4.0.0",
+    "react-redux-toastr": "3.4.0",
     "react-router": "^2.0.1",
     "react-sparklines": "^1.5.2",
-    "react-toastr-redux": "0.3.0",
     "redux": "^3.0.4",
-    "redux-promise": "^0.5.3"
+    "redux-promise": "^0.5.3",
+    "toastr": "2.1.2"
   }
 }
