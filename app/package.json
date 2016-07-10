@@ -30,6 +30,7 @@
     "babel-preset-stage-1": "^6.1.18",
     "leaflet": "^0.7.7",
     "lodash": "^3.10.1",
+    "moment": "^2.14.1",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
     "react-google-maps": "^4.7.1",
