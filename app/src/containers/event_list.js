@@ -39,28 +39,33 @@ class EventList extends Component {
 
   renderEvent(event) {
 
-    //console.log(event);
     let data = event._source;
-console.log(moment);
-    const date = moment(data['@timestamp']).format('llll');
+     if(data){
+         const date = moment(data['@timestamp']).format('llll');
 
-    const position = [ data.lat, data.lng ];
+         const position = [ data.lat, data.lng ];
 
-    return (
-      <tr key={data.seqNumber}>
-        <td><Map position={position} id={data.deviceID}/></td>
-        <td>{data.deviceID}</td>
-        <td>{date}</td>
-        <td>{data.station}</td>
-      </tr>
-    );
+         return (
+             <tr key={data.seqNumber}>
+                 <td><Map position={position} id={data.deviceID}/></td>
+                 <td>{data.deviceID}</td>
+                 <td>{date}</td>
+                 <td>{data.station}</td>
+             </tr>
+         );
+     } else {
+         return <span/>;
+     }
+
   }
 
   render() {
     if (!this.props.events.data) return <div></div>;
-
     return (
       <table className="table table-hover">
+          <caption style={{captionSide:'top'}}>
+              <small>{this.props.events.data.length} out of {this.props.events.count} discharge events</small>
+          </caption>
         <thead>
           <tr>
             <th>Location</th>
