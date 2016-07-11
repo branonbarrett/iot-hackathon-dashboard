@@ -25,23 +25,21 @@ class EventList extends Component {
   }
 
   componentWillReceiveProps(nextprops) {
-    if (!nextprops.events || !this.props.events) return;
+    console.log('nextprops...', nextprops.events);
+    console.log('props...', this.props.events);
 
-    //toastr.success('The title', 'The message');
+    if (!nextprops.events || !this.props.events) return;
     // const data = nextprops.events[0]._source
-    console.log(nextprops.events.count);
-    console.log(this.props.events.count);
+    console.log('events...', nextprops.events.data);
     if (this.props.events.count !== nextprops.events.count) {
-      toastr.error('rrrrrrrrr');
-      //this.props.dispatch(NotificationActions.resetNotification());
+      toastr.error(`Event from device: ${nextprops.events.data[0]._source.deviceID}`);
     }
   }
 
   renderEvent(event) {
 
-    //console.log(event);
     let data = event._source;
-console.log(moment);
+
     const date = moment(data['@timestamp']).format('llll');
 
     const position = [ data.lat, data.lng ];
@@ -57,7 +55,7 @@ console.log(moment);
   }
 
   render() {
-    if (!this.props.events.data) return <div></div>;
+    if (!this.props.events || !this.props.events.data) return <div></div>;
 
     return (
       <table className="table table-hover">
