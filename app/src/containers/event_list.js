@@ -25,12 +25,12 @@ class EventList extends Component {
   }
 
   componentWillReceiveProps(nextprops) {
-    console.log('nextprops...', nextprops.events);
-    console.log('props...', this.props.events);
+    // console.log('nextprops...', nextprops.events);
+    // console.log('props...', this.props.events);
 
     if (!nextprops.events || !this.props.events) return;
-    // const data = nextprops.events[0]._source
-    console.log('events...', nextprops.events.data);
+
+    // console.log('events...', nextprops.events.data);
     if (this.props.events.count !== nextprops.events.count) {
       toastr.error(`Event from device: ${nextprops.events.data[0]._source.deviceID}`);
     }
@@ -40,25 +40,33 @@ class EventList extends Component {
 
     let data = event._source;
 
-    const date = moment(data['@timestamp']).format('llll');
+     if(data) {
+       const date = moment(data['@timestamp']).format('llll');
 
-    const position = [ data.lat, data.lng ];
+       const position = [ data.lat, data.lng ];
 
-    return (
-      <tr key={data.seqNumber}>
-        <td><Map position={position} id={data.deviceID}/></td>
-        <td>{data.deviceID}</td>
-        <td>{date}</td>
-        <td>{data.station}</td>
-      </tr>
-    );
+       return (
+         <tr key={data.seqNumber}>
+           <td><Map position={position} id={data.deviceID}/></td>
+           <td>{data.deviceID}</td>
+           <td>{date}</td>
+           <td>{data.station}</td>
+         </tr>
+       );
+     } else {
+       return <span/>;
+     }
   }
 
   render() {
+
     if (!this.props.events || !this.props.events.data) return <div></div>;
 
     return (
       <table className="table table-hover">
+        <caption style={{captionSide:'top'}}>
+          <small>{this.props.events.data.length} out of {this.props.events.count} discharge events</small>
+        </caption>
         <thead>
           <tr>
             <th>Location</th>

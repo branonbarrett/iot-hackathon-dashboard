@@ -13,6 +13,7 @@ export default class App extends Component {
     // <LargeMap position={position}/>
     return (
       <div>
+        <h2 style={{marginTop: '16px'}}>Event Dashboard</h2>
         <SearchBar />
         <EventList />
       </div>
