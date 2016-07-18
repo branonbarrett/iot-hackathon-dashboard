@@ -14,10 +14,6 @@ ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
     <div>
       <App />
-      <ReduxToastr
-        timeOut={4000}
-        newestOnTop={false}
-        position="top-left" />
     </div>
   </Provider>
   , document.querySelector('.container'));

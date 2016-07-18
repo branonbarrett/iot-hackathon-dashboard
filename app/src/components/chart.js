@@ -1,19 +1,36 @@
 import _ from 'lodash';
 import React from 'react';
-import { Sparklines, SparklinesLine, SparklinesReferenceLine } from 'react-sparklines';
+import { Doughnut } from 'react-chartjs';
+import * as Colors from 'material-ui/styles/colors';
 
 function average(data) {
   return _.round(_.sum(data)/data.length);
 }
 
 export default (props) => {
+  let data = {
+    labels: [
+      'Non-reporting Devices',
+      'Devices'
+    ],
+    datasets: [
+      {
+        data: [2, 300],
+        backgroundColor: [
+          Colors.red600,
+          Colors.green500
+        ],
+        hoverBackgroundColor: [
+          Colors.red600,
+          Colors.green500
+        ]
+    }]
+  };
+
   return (
     <div>
-      <Sparklines data={props.data} limit={5} width={180} height={120}>
-        <SparklinesLine color={props.color} />
-        <SparklinesReferenceLine type="avg" />
-      </Sparklines>
-      <div>{average(props.data)} {props.units}</div>
+      <Doughnut data={data}></Doughnut>
+      <div>Device Tracking</div>
     </div>
   );
 }

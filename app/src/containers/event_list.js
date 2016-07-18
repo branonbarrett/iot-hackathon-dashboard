@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import Snackbar from 'material-ui/Snackbar';
+import * as Colors from 'material-ui/styles/colors';
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import { fetchEvents } from '../actions/index';
 import { toastr } from 'react-redux-toastr'
 import moment from 'moment';
+import randomstring from 'randomstring';
 
-import Map from '../components/map';
+import Map from '../components/small_map';
 
 class EventList extends Component {
+
+  isAlertOpen = false;
+  alertMessage = '';
 
   constructor(props) {
     super(props);
@@ -24,15 +31,22 @@ class EventList extends Component {
     }, 2000);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (!this.props.events) return true;
+
+    return this.props.events.count !== nextProps.events.count;
+  }
+
   componentWillReceiveProps(nextprops) {
-    // console.log('nextprops...', nextprops.events);
-    // console.log('props...', this.props.events);
 
     if (!nextprops.events || !this.props.events) return;
 
+    let time = moment(nextprops.events.data[0]['@timestamp']).format('llll');
     // console.log('events...', nextprops.events.data);
     if (this.props.events.count !== nextprops.events.count) {
-      toastr.error(`Event from device: ${nextprops.events.data[0]._source.deviceID}`);
+      this.alertMessage = `Discharge event received from device: ${nextprops.events.data[0]._source.deviceID}. Event ID: ${nextprops.events.data[0]._id}`;
+      this.isAlertOpen = true;
+      //toastr.error(`Event from device: ${nextprops.events.data[0]._source.deviceID}`);
     }
   }
 
@@ -40,22 +54,27 @@ class EventList extends Component {
 
     let data = event._source;
 
-     if(data) {
-       const date = moment(data['@timestamp']).format('llll');
+    if(!data) return <span/>;
 
-       const position = [ data.lat, data.lng ];
+    const date = moment(data['@timestamp']).format('llll');
 
-       return (
-         <tr key={data.seqNumber}>
-           <td><Map position={position} id={data.deviceID}/></td>
-           <td>{data.deviceID}</td>
-           <td>{date}</td>
-           <td>{data.station}</td>
-         </tr>
-       );
-     } else {
-       return <span/>;
+     let position = [33.884852, -84.465927];
+     if (data.lat) {
+       position = [ data.lat, data.lng ];
      }
+
+     const id = randomstring.generate(7);
+
+
+     return (
+        <TableRow key={id} style={{height: '200px'}}>
+          <TableRowColumn><Map position={position} id={data.deviceID}/></TableRowColumn>
+          <TableRowColumn>{data.deviceID}</TableRowColumn>
+          <TableRowColumn>{date}</TableRowColumn>
+          <TableRowColumn>{data.station}</TableRowColumn>
+          <TableRowColumn>{event._id}</TableRowColumn>
+        </TableRow>
+     );
   }
 
   render() {
@@ -63,22 +82,29 @@ class EventList extends Component {
     if (!this.props.events || !this.props.events.data) return <div></div>;
 
     return (
-      <table className="table table-hover">
-        <caption style={{captionSide:'top'}}>
-          <small>{this.props.events.data.length} out of {this.props.events.count} discharge events</small>
-        </caption>
-        <thead>
-          <tr>
-            <th>Location</th>
-            <th>Device ID</th>
-            <th>Date</th>
-            <th>Data Station</th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.props.events.data.map(this.renderEvent)}
-        </tbody>
-      </table>
+      <div style={{paddingTop: '50px'}}>
+        <h4 style={{color: '#6b6b6b', paddingLeft: '24px'}}>Showing {this.props.events.data.length} out of {this.props.events.count} discharge events</h4>
+        <Table>
+          <TableHeader displaySelectAll={false}>
+            <TableRow>
+              <TableHeaderColumn>Location</TableHeaderColumn>
+              <TableHeaderColumn>Device ID</TableHeaderColumn>
+              <TableHeaderColumn>Date</TableHeaderColumn>
+              <TableHeaderColumn>Data Station</TableHeaderColumn>
+              <TableHeaderColumn>Event ID</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+          <TableBody displayRowCheckbox={false}>
+            {this.props.events.data.map(this.renderEvent)}
+          </TableBody>
+        </Table>
+        <Snackbar
+          open={this.isAlertOpen}
+          bodyStyle={{backgroundColor: Colors.red700, height: '200px', maxWidth: '500px'}}
+          message={this.alertMessage}
+          autoHideDuration={10000}
+          onRequestClose={this.handleRequestClose} />
+      </div>
     );
   }
 }
